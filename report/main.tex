@@ -1,0 +1,186 @@
+\documentclass[12pt,onecolumn,a4paper]{article}
+\usepackage{epsfig,graphicx,subfigure,amsthm,amsmath}
+\usepackage{color,xcolor}     
+\usepackage{xepersian}
+\usepackage{cite}
+\usepackage{fontspec}
+\usepackage{multirow}
+
+\settextfont[Scale=1]{BMitra}
+\setlatintextfont[Scale=0.8]{Vazir-Regular}
+
+
+\begin{document}
+\title{گزارش تکلیف ۳ درس یادگیری ماشین} 
+\author{کسرا سینایی\\
+شماره دانشجویی ۸۱۰۶۹۶۲۵۴\\
+}
+\date{\today}
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\section{تمارین آماری}
+
+\subsection{سوال یک}
+\begin{figure}[h!]
+    \includegraphics[width=\linewidth]{q1.jpg}    
+\end{figure}
+
+\subsection{سوال دو}
+\begin{figure}[h!]
+    \includegraphics[width=\linewidth]{q2.jpg}    
+\end{figure}
+\newpage
+\subsection{سوال چهار}
+\begin{figure}[h!]
+    \includegraphics[width=\linewidth]{q4.jpg}    
+\end{figure}
+\newpage
+\subsection{سوال هفت}
+\begin{figure}[h!]
+    \includegraphics[width=\linewidth]{q7a.jpg}    
+\end{figure}
+\newpage
+\begin{figure}[h!]
+    \includegraphics[width=\linewidth]{q7b.jpg}    
+\end{figure}
+\begin{figure}[h!]
+    \includegraphics[width=\linewidth]{q7c.jpg}    
+\end{figure}
+
+\section{تمارین شبیه سازی}
+\subsection{سوال هشت}
+در این تمرین ابتدا با استفاده از کتابخانه \lr{OpenCV} عکس‌های موجود در پوشه مربوط به این سوال را لود کرده و تنها مقادیر مربوط به میانگین کانال \lr{R} و \lr{B} را به عنوان فیچر استخراج شده و به همراه لیلبل‌ها باز گردانده می‌شوند. تابع مورد استفاده در این سوال مشابه تمرین یک بوده و در فایل \lr{load pics py} پیاده سازی شده است.
+\\
+برای پیاده سازی طبقه بند در هر سه سوال  این تکلیف یک کلاس به نام \lr{GMM} پیاده سازی شده است که سه متد برای فیت کردن مدل و پیش‌بینی دارد:
+\begin{description}
+    \item[$\bullet$] \lr{constructor}: ابعاد فیچرها، تعداد کلاس‌ها و تعداد المان‌های میکسچر مدل را از کاربر می‌گیرد و یک لیست آبجکت \lr{mixture GaussianMixture} (از کتابخانه \lr{scikit learn}) با تعداد میکسچر تنظیم شده در آرگومان ورودی می‌سازد.
+    \item[$\bullet$] \lr{update}: داده‌ها و لیبل‌ها را گرفته و برای هر کلاس پارامترهای میکسچر مدل را آپدیت می‌کند. (با استفاده از متد \lr{fit})
+    \item[$\bullet$]  \lr{predict}: این تابع یک بردار با اندازه دلخواه از فیچرها می‌گیرد و با توجه به میکسچر مدل‌های یادگرفته شده لیبل آن‌ها را پیش‌بینی می‌کند. مبنای تصمیم گیری در این طبقه بند \lr{loglikelihood} میکسچر مدل‌ها برای هر یک از کلاس‌ها است. با استفاده از متد \lr{score samples} این مقدار به دست می‌آید.
+\end{description}
+تابع \lr{update} حاصل جمع مقادیر \lr{AIC} و \lr{BIC} را بازمی‌گرداند. میانگین‌ها و ماتریس کواریانس همه کلاس‌ها نیز پابلیک می‌باشد و می‌توان خراج از کلاس به آن‌ها دسترسی داشت و از آن‌ها برای ترسیم کانتورهای میکسچرمدل‌های کلاس‌ها استفاده کرد.
+\\
+تابع \lr{plot} برای ترسیم این کانتورها در هر سه سوال شبیه سازی این تکلیف استفاده شده‌است. این تابع چهار آرایه \lr{numpy} در آرگومان‌های ورودی خود دریافت می‌کند. آرایه اول در هر سطر خود میانگین یک توزیع گوسی را دارد، آرایه دوم ماتریس کواریانس متناظر با میانگین‌ توزیع‌های آرایه اول است، آرایه سوم و چهارم داده‌های سوال هستند که به صورت نقاط رنگی اسکتر می‌شوند. برای رسم کانتور نیز یک مش گرید در راستای \lr{x} و \lr{y} تشکیل می‌دهیم و با استفاده از تابع \lr{Multivariate Normal} از کتابخانه \lr{scipy} احتمال آن را حساب می‌کنیم و برای هر توزیع نرمال دو خط کانتور رسم می‌کنیم.
+\\
+نمودارهای \lr{AIC} و \lr{BIC} را پس از فیت کردن میکسچر مدل‌هایی با تعداد مدل ۲-۹ رسم می‌کنیم تا بر اساس آن بهینه ترین مدل برای این سوال را بیابیم.
+
+\begin{figure}[t!]
+    \label{fig:1}
+    \begin{center}
+    \includegraphics[scale=0.7]{q8_aicbic.png}
+    \caption{نمودارهای \lr{Akaike/Bayes Information Criterion} به ازای مقادیر مختلف \lr{k}}
+    \end{center}
+\end{figure}
+\newpage
+
+با توجه به نمودار می‌توان نتیجه گرفت مقدار ۳ و ۷ برای مدل مناسب به نظر می‌رسند. حال کانتورهای مربوط به میکسچر مدل را برای این طبقه بند رسم می‌کنیم.
+
+\begin{figure}[h!]
+    \label{fig:2}
+    \begin{center}
+    \includegraphics[scale=0.7]{q8_scatter.png}
+    \caption{کانتور توزیع‌های گوسی مربوط به میکسچر مدل‌های دو کلاس}
+    \end{center}
+\end{figure}
+
+برای این حالت پارامترهای مدل‌های گوسی فیت شده برای هر کلاس در جدول زیر گزارش شده‌اند.
+
+\begin{center}
+\begin{table}[h]
+    \begin{centering}
+        \begin{tabular}{|c|ccc|ccc|}
+        \hline
+            \multicolumn{1}{|c|}{\multirow{2}{*}{\lr{comp}}} & \multicolumn{3}{c|}{\lr{ManU}}    & \multicolumn{3}{c|}{\lr{CHF}}   \\ \cline{2-7} 
+            \multicolumn{1}{|c|}{}   & \multicolumn{1}{c|}{\lr{weight}} & \multicolumn{1}{c|}{$\mu$} & $\sigma$ & \multicolumn{1}{c|}{\lr{weight}} & \multicolumn{1}{c|}{$\mu$}  & $\sigma$ \\ \hline
+            \lr{1}      & \multicolumn{1}{c|}{\lr{0.46}}     & \multicolumn{1}{c|}{$\begin{pmatrix}68.4 & 106.6 \end{pmatrix}$} & $\begin{pmatrix} 169.1 & -4.9  \\  -4.9 & 226.12  \end{pmatrix}$    & \multicolumn{1}{c|}{\lr{0.03}}    & \multicolumn{1}{c|}{$\begin{pmatrix}182.4 & 167.4 \end{pmatrix}$} & $\begin{pmatrix} 33.6 & 20.7  \\  20.7 & 12.8  \end{pmatrix}$   \\ \hline
+            \lr{2}      & \multicolumn{1}{c|}{\lr{0.34}}     & \multicolumn{1}{c|}{$\begin{pmatrix}45.8 & 74.9 \end{pmatrix}$} & $\begin{pmatrix} 99.9 & 87.3  \\  87.3 & 207.4  \end{pmatrix}$    & \multicolumn{1}{c|}{\lr{0.44}}    & \multicolumn{1}{c|}{$\begin{pmatrix}66.3 & 59.4 \end{pmatrix}$} & $\begin{pmatrix} 232.9 & 138.5  \\  138.5 & 144.8  \end{pmatrix}$   \\ \hline
+            \lr{3}      & \multicolumn{1}{c|}{\lr{0.19}}     & \multicolumn{1}{c|}{$\begin{pmatrix}98.0 & 145.2 \end{pmatrix}$} & $\begin{pmatrix} 250.2 & -15.8  \\  -15.8 & 107.1  \end{pmatrix}$    & \multicolumn{1}{c|}{\lr{0.53}}    & \multicolumn{1}{c|}{$\begin{pmatrix}103.5 & 95.1 \end{pmatrix}$} & $\begin{pmatrix} 536.8 & 54.6  \\  54.6 & 193.0  \end{pmatrix}$   \\ \hline
+        \end{tabular}
+    \end{centering}
+    \caption{پارامترهای مدل فیت شده}
+\end{table}
+\end{center}
+
+\newpage~\newpage
+\subsection{سوال نه}
+در این سوال ابتدا داده‌های سه کلاس را بر حسب فیچرهای خواسته شده دو به دو در نمودار به تصویر می‌کشیم تا تشخیص بدهیم کدام فیچرها برای طبقه‌بندی مناسب‌تر می‌باشند.
+
+\begin{figure}[h!]
+    \label{fig:3}
+    \begin{center}
+    \includegraphics[scale=0.6]{q9_feature_comp.png}
+    \caption{نمونه‌های مورد استفاده برای طبقه بندی پنگوئن‌ها}
+    \end{center}
+\end{figure}
+
+تفکیک‌پذیری داده‌ها بر حسب دو فیچر \lr{culmen length} و \lr{culmen depth} از سایر مجموعه فیچرهای خواسته شده در صورت سوال بهتر به نظر می‌رسند. داده‌های مربوط به سه گونه مختلف پنگوئن‌ بر حسب این دو ویژگی از یکدیگر بیشتر فاصله داشته و نمونه‌های استثنایی کمتر به چشم می‌خورند.
+\\
+در قسمت بعدی تمرین با استفاده از کلاس \lr{GMM} که در سوال ۸ همین تمرین نیز از آن استفاده شد، طبقه بندهایی بر مبنای میکسچر مدل‌های گوسی با تعداد مؤلفه‌های مختلف فیت می‌کنیم. بر حسب دقت طبقه بند بر روی مجموعه داده‌ی تست مشخص می‌کنیم که کدام مجموعه فیچر برای طبقه بندی بهتر می‌باشد. دقت حالات مختلف طبقه‌بندی در جدول زیر آورده شده‌اند.
+\begin{center}
+\begin{table}[h!]
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \lr{Error} & \lr{Feature Set} & \lr{GMM Components}     \\ \hline
+        \lr{98.5}  & 1           & \multirow{4}{*}{2} \\ \cline{1-2}
+        \lr{95.6}  & 2           &                    \\ \cline{1-2}
+        \lr{79.7}  & 3           &                    \\ \cline{1-2}
+        \lr{78.2}  & 4           &                    \\ \hline
+        \lr{97.1}  & 1           & \multirow{4}{*}{3} \\ \cline{1-2}
+        \lr{95.6}  & 2           &                    \\ \cline{1-2}
+        \lr{81.1}  & 3           &                    \\ \cline{1-2}
+        \lr{84.0}  & 4           &                    \\ \hline
+        \lr{97.1}  & 1           & \multirow{4}{*}{4} \\ \cline{1-2}
+        \lr{95.6}  & 2           &                    \\ \cline{1-2}
+        \lr{81.1}  & 3           &                    \\ \cline{1-2}
+        \lr{81.1}  & 4           &                    \\ \hline
+        \lr{98.5}  & 1           & \multirow{4}{*}{5} \\ \cline{1-2}
+        \lr{95.6}  & 2           &                    \\ \cline{1-2}
+        \lr{81.1}  & 3           &                    \\ \cline{1-2}
+        \lr{81.1}  & 4           &                    \\ \hline
+    \end{tabular}
+    \caption{دقت مدل‌های فیت بر روی مجموعه فیچرهای مختلف}
+\end{table}
+\end{center}
+
+\newpage
+\subsection{سوال ده}
+در این سوال عملکرد طبقه‌بند ساده بیزی را با عملکرد طبقه‌بندی با مدل \lr{GMM} مقایسه می‌کنیم.
+\\
+ابتدا همانند تکالیف قبلی با استفاده از الگوریتم \lr{optimal bayes} و بدون دانش اولیه \lr{(prior)} داده‌ها را طبقه‌بندی می‌کنیم. کانتور مدل‌های گاوسی به دست آمده برای تصمیم‌گیری بیز در شکل زیر نشان داده شده‌اند. دقت طبقه بند در این حالت برابر ۸۸ درصد می‌باشد.
+
+\begin{figure}[h!]
+    \label{fig:4}
+    \begin{center}
+    \includegraphics[scale=0.6]{q10_bayes.png}
+    \caption{توزیع‌های به دست آمده توسط تخمین‌گر بیزی ساده}
+    \end{center}
+\end{figure}
+
+حال برای تشخیص دادن بهترین میکسچر مدل برای طبقه‌بند این سوال تعداد مؤلفه‌های مکیشچر مدل طبقه‌بند را از ۲ تا ۱۶ تغییر می‌دهیم و با رسم نمودار \lr{AIC} و \lr{BIC} بهینه‌ترین تعداد برای مؤلفه‌ها را می‌یابیم. این اطلاعات در شکل زیر نمایش داده شده‌اند.
+\begin{figure}[h!]
+    \label{fig:5}
+    \begin{center}
+    \includegraphics[scale=0.6]{q10_aicbic.png}
+    \caption{تاثیر تعداد مؤلفه‌های میکسچرمدل گاوسی}
+    \end{center}
+\end{figure}
+
+برای رسم نمودارها و طبقه‌بندی در این سوال نیز همان کلاس پیاده سازی شده در سوال ۸ استفاده شده است. 
+
+\begin{figure}[h]
+    \centering
+    \subfigure[\lr{k = 3}]{
+    \includegraphics[width=.45\textwidth]{q10_3.png}
+    }
+    \subfigure[\lr{k = 8}]{
+    \includegraphics[width=.45\textwidth]{q10_8.png}
+    }
+    \subfigure[\lr{k = 16}]{
+    \includegraphics[width=.5\textwidth]{q_10_16.png}
+    }
+    \caption{کانتور توزیع‌های گاوسی مربوط به میکسچرمدل با تعداد مؤلفه‌های متفاوت}
+    \label{fig:6}
+\end{figure}
+
+\end{document}
