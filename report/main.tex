@@ -84,7 +84,19 @@
     \end{center}
 \end{figure}
 
-برای این حالت پارامترهای مدل‌های گوسی فیت شده برای هر کلاس در جدول زیر گزارش شده‌اند.
+برای این حالت پارامترهای مدل‌های گوسی فیت شده برای هر کلاس در جدول زیر گزارش شده‌اند. همچنین طبقه‌بند با تعداد مؤلفه‌های بالاتر (۴ و ۶) نیز آپدیت شد و کانتور مد‌های گاوسی آن پس از یادگیری در شکل زیر نشان داده شده‌اند. با توجه به نمدار \lr{BIC} تعداد مؤلفه بهینه برای این مسئله ۳ انتخاب شدُ تاثیر افزایش مؤلفه‌ها بر روی شکل کانتور توزیع‌های گاوسی طبقه بند برای هر یک از کلاس‌ها در شکل دیده می‌شود. تطابق بیش از اندازه بر روی داده‌های نویزی (عکس‌هایی که هم رنگ آبی و هم رنگ قرمز در آن‌ها به یک مقدار دیده می‌شد) لزوماً به بهبود عملکرد طبقه بند نمی‌انجامد.
+
+\begin{figure}[h]
+    \centering
+    \subfigure[\lr{k = 4}]{
+    \includegraphics[width=.45\textwidth]{q8_4.png}
+    }
+    \subfigure[\lr{k = 6}]{
+    \includegraphics[width=.45\textwidth]{q8_6.png}
+    }
+    \caption{کانتورهای به دست آمده از طبقه‌بند با تعداد مؤلفه‌های بیشتر}
+    \label{fig:8}
+\end{figure}
 
 \begin{center}
 \begin{table}[h]
@@ -102,7 +114,7 @@
 \end{table}
 \end{center}
 
-\newpage~\newpage
+\newpage
 \subsection{سوال نه}
 در این سوال ابتدا داده‌های سه کلاس را بر حسب فیچرهای خواسته شده دو به دو در نمودار به تصویر می‌کشیم تا تشخیص بدهیم کدام فیچرها برای طبقه‌بندی مناسب‌تر می‌باشند.
 
@@ -121,7 +133,7 @@
 \begin{table}[h!]
     \begin{tabular}{|c|c|c|}
         \hline
-        \lr{Error} & \lr{Feature Set} & \lr{GMM Components}     \\ \hline
+        \lr{Accuracy} & \lr{Feature Set} & \lr{GMM Components}     \\ \hline
         \lr{98.5}  & 1           & \multirow{4}{*}{2} \\ \cline{1-2}
         \lr{95.6}  & 2           &                    \\ \cline{1-2}
         \lr{79.7}  & 3           &                    \\ \cline{1-2}
@@ -142,8 +154,28 @@
     \caption{دقت مدل‌های فیت بر روی مجموعه فیچرهای مختلف}
 \end{table}
 \end{center}
+برای رسم کانتور توزیعذهای فیت شده با استفاده از زیرمجموعه‌های مختلف از دیتاست تعداد مؤلفه‌ها را برابر با ۲ در کلاس \lr{GMM} تنظیم می‌کنیم و با دیتا‌ست‌های مختلف مدل را آپدیت می‌کنیم. کانتورهای به دست آمده برای برای هر زیرمجموعه از دیتا ست و دقت طبقه‌بند بر روی مجموعه تست در تصاویر زیر نشان داده شده‌اند.
+
+\begin{figure}[h]
+    \centering
+    \subfigure[فیچرهای ۱]{
+    \includegraphics[width=.45\textwidth]{q9_1.png}
+    }
+    \subfigure[فیچرهای ۲]{
+    \includegraphics[width=.45\textwidth]{q9_2.png}
+    }
+    \subfigure[فیچرهای ۳]{
+    \includegraphics[width=.45\textwidth]{q9_3.png}
+    }
+    \subfigure[فیچرهای ۴]{
+    \includegraphics[width=.45\textwidth]{q9_4.png}
+    }
+    \caption{کانتور توزیع‌های گاوسی مربوط به میکسچرمدل با تعداد مؤلفه‌های متفاوت}
+    \label{fig:6}
+\end{figure}
 
 \newpage
+~\newpage
 \subsection{سوال ده}
 در این سوال عملکرد طبقه‌بند ساده بیزی را با عملکرد طبقه‌بندی با مدل \lr{GMM} مقایسه می‌کنیم.
 \\
@@ -177,10 +209,10 @@
     \includegraphics[width=.45\textwidth]{q10_8.png}
     }
     \subfigure[\lr{k = 16}]{
-    \includegraphics[width=.5\textwidth]{q_10_16.png}
+    \includegraphics[width=.5\textwidth]{q10_16.png}
     }
     \caption{کانتور توزیع‌های گاوسی مربوط به میکسچرمدل با تعداد مؤلفه‌های متفاوت}
-    \label{fig:6}
+    \label{fig:7}
 \end{figure}
 
 \end{document}
